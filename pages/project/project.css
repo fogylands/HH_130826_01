@@ -1,0 +1,277 @@
+/* Project */
+
+
+
+
+
+
+
+
+
+
+/* =================================
+   MAIN GRID
+================================= */
+
+
+.navL{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+   height: 100%;
+  
+}
+
+.main-l {
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  min-width: 0;
+  overflow: hidden;
+}
+.main-r {
+  display: flex;
+  flex-direction: column;
+  min-width: 20vw;
+  min-height: 0;
+  height: 100%;
+}
+
+.mainSide {
+
+  grid-area:mainSide;
+
+  display:flex;
+
+  align-items:flex-end;
+
+  height:100%;
+    overflow: visible;
+
+}
+
+.project-middle {
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+
+.project-description {
+  margin-top:auto;
+}
+
+
+
+.project-name {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: block;
+  white-space: nowrap;
+  overflow: visible;
+  font-size: var(--font-size-body);
+}
+
+
+.project-header {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  font-size: var(--font-size-nav);
+}
+
+
+
+
+.project-nav {
+  display:flex;
+  justify-content:space-between;
+  width:100%;
+}
+
+
+
+
+.project-content,
+.project-gallery {
+  width: 100%;
+  height: 100%;
+}
+
+.project-image {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-image.active {
+  display: block;
+}
+
+.project-description {
+  align-items:flex-end;
+}
+
+
+
+
+
+
+
+
+/* =================================
+   RIGHT SIDE
+================================= */
+.project-credits{
+padding-left: 50%;
+}
+
+
+
+.project-description{
+  padding-left: 10vh;
+  margin-top:auto;
+  
+}.detailsL {
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+}
+
+.detailsL div:nth-child(1) {
+  text-align:left;
+}
+
+.detailsL div:nth-child(2) {
+  text-align:center;
+}
+
+.detailsL div:nth-child(3) {
+  text-align:right;
+}
+
+
+
+
+.project-title{
+  font-size: 2vh;
+ line-height: 0.5vh;
+}
+
+
+
+
+@media (max-width: 700px) {
+
+  .container {
+  display: grid;
+
+  grid-template-columns:
+   1fr;
+
+  column-gap: 2vw;
+
+
+
+    grid-template-rows:
+
+      auto
+
+      5vh
+
+      1fr;
+
+  grid-template-areas:
+  "header-l"
+  "header-r"
+  "main";
+  
+
+  }
+
+.main {
+  display: grid;
+
+  grid-template-columns:
+    5vw minmax(0, 1fr);
+
+  column-gap: 2vw;
+
+  grid-template-areas:
+  ". nav"
+  "name gallery"
+  ". info";
+}
+.header-l{
+
+  text-align: left;
+   padding-top: 2vh;
+  padding-left: 9vw;
+  
+}
+
+.header-r{
+
+  padding: 0vw;
+  padding-left: 9vw;
+ 
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+
+}
+
+
+.navL {
+  grid-area: nav;
+}
+
+.mainSide {
+  grid-area: name;
+}
+
+.main-l {
+  grid-area: gallery;
+}
+
+.main-r {
+  grid-area: info;
+}
+
+
+
+ .main-l {
+  grid-area: gallery;
+
+  width: 100%;
+  min-width: 0;
+
+  aspect-ratio: 4 / 3;
+
+  overflow: hidden;
+}
+
+.main-l .project-content {
+  width: 100%;
+  height: 100%;
+}
+
+.main-l .project-gallery {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.main-l .project-image {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.main-l .project-image.active {
+  display: block;
+}
+
+}

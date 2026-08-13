@@ -1,0 +1,23 @@
+{
+  "start": "since 2027",
+  "studioLocation": "Winterthtur",
+  "employeeCount": 14,
+  "employees": [
+    {
+      "name": "Anna Müller",
+      "text": "Architect focusing on housing and urban projects."
+    },
+    {
+      "name": "Peter Meier",
+      "text": "Responsible for competitions and visualization."
+    },
+    {
+      "name": "Luc Dietlinger",
+      "text": "Crazy Dude."
+    },
+    {
+      "name": "Alexandra Wenger",
+      "text": "Love to look at blank pages."
+    }
+  ]
+}

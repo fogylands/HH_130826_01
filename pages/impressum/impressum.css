@@ -1,0 +1,18 @@
+.impressum .container {
+  grid-template-areas:
+    "header-l header-r"
+    "main-l main-l"
+    "footer-l footer-r";
+}
+
+.impressum .main-l {
+  grid-area: main-l;
+}
+
+
+
+#impressum-content {
+    grid-area: main-l;
+padding-left: 7vw;
+padding-right: 30vw;
+}
