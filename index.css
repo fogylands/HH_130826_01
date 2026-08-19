@@ -1,6 +1,7 @@
 /* Body Index */
 body.index {
   overflow:hidden;
+
 }
 
 
@@ -16,7 +17,7 @@ body.index .container {
 .footer-r {
   position:sticky;
   font-size:2vh;
-  
+    letter-spacing: 0.08em;
 }
 
 
@@ -26,17 +27,115 @@ body.index .container {
 }
 
 
+/* =================================
+   MOBILE LANDSCAPE
+================================= */
+@media (max-width: 950px) and (orientation: landscape) {
 
-@media (max-width: 700px) {
+:root {
+  --font-size-nav: 4vh;
+  --font-size-body: 6vh;
+}
+
+
+
+
+/* CONTAINER GRID MOBILE */
+
+  body.index .container {
+
+    display: grid;
+
+    grid-template-areas:
+
+      "header-l header-r"
+
+      "main main"
+
+      "footer-l footer-r";
+
+    grid-template-columns: 1fr 1fr;
+
+    grid-template-rows: 8vh 1fr auto;
+
+  }
+
+.main {
+  grid-area: main;
+  grid-template-areas:
+    "navSide navL navR"
+    "mainSide mainL mainR"
+    "detailsSide detailsL detailsR";
+
+  grid-template-columns:
+    4vw minmax(0, auto) minmax(0, 1fr);
+
+  grid-template-rows:
+    5vh auto minmax(8vh, 1fr);
+
+  gap: 1vh 2vw;
+
+}
+
+
+.header-l,
+.header-r,
+.main,
+.footer-l,
+.footer-r {
+  padding-left: 11vw;
+  padding-right: 4vw;
+    letter-spacing: 0.08em;
+
+font-size: var(--font-size-nav);
+
+
+}
+
+
+.view-nav{
+
+font-size: var(--font-size-nav);
+}
+
+
+.header-r, .footer-r {
+  text-align: left;
+
+}
+
+
+.footer-r {
+
+
+
+  text-align: right;
+
+  letter-spacing: 0.08em;
+}
+
+
+.header-r {
+text-align: right;
+}
+
+
+
+}
+
+/* =================================
+   MOBILE PORTRAIT
+================================= */
+
+
+@media (max-width: 700px) and (orientation: portrait) {
 
   /* mobile styles go here */
 
 
 
 
-/* =================================
-   CONTAINER GRID MOBILE jajaja
-================================= */
+/* CONTAINER GRID MOBILE */
 
 .container {
     display: grid;
@@ -59,8 +158,6 @@ body.index .container {
 
 
 
-
-
 .header-l,
 .header-r,
 .main,
@@ -68,6 +165,7 @@ body.index .container {
 .footer-r {
   padding-left: 4vw;
   padding-right: 4vw;
+    letter-spacing: 0.08em;
 }
 
 
@@ -89,7 +187,7 @@ body.index .container {
   align-items: flex-start;
 
   text-align: left;
-
+  letter-spacing: 0.08em;
 }
 
 

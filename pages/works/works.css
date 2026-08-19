@@ -384,6 +384,51 @@ text-transform: uppercase;
 
 
 
+/* =================================
+   MOBILE LANDSCAPE
+================================= */
+@media (max-width: 950px) and (orientation: landscape) {
+
+:root {
+  --font-size-nav: 4vh;
+  --font-size-body: 6vh;
+}
+
+
+.header-l,
+.header-r,
+.main,
+.footer-l,
+.footer-r {
+padding-left:vw ;
+    letter-spacing: 0.08em;
+
+font-size: var(--font-size-nav);
+
+}
+
+
+.header-l{
+  padding-left: 11vw;
+}
+  .view-nav {
+
+    font-size: var(--font-size-nav);
+
+    padding-left: 6vw;
+
+  }
+
+
+  .main{
+    padding-left: 6vw;
+  }
+
+}
+
+
+
+
 @media (max-width: 700px) {
 
     body.works .container {

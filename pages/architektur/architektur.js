@@ -105,6 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initImageNavigation();
     renderMobileProjects();
 
+    syncAllRows();
+  
+
   })
   .catch(err => console.error('Failed to load projects.json:', err));
 
@@ -278,7 +281,7 @@ async function renderProject(project) {
     <a class="project-name" href="../project/project.html?id=${project.name}">
       <span class="project-number">${project.number}</span>
 <br>
-<span class="project-name">${project.name}</span>
+<span >${project.name}</span>
     </a>
   `;
   galleryRow.appendChild(header);
@@ -360,14 +363,32 @@ function initImageNavigation() {
   });
 
 }
-
-
 function syncGalleryRowHeight(row) {
   const image = row.querySelector('.project-images');
 
   if (!image) return;
 
-  row.style.height = `${image.getBoundingClientRect().height}px`;
+  const height = image.getBoundingClientRect().height;
+
+  row.style.height = `${height}px`;
+
+  const name = row.querySelector('.project-name');
+
+if (name) {
+
+  
+const fontSize = Math.min(height * 0.08,17);
+
+  console.log("row height:", height);
+
+  console.log("font size:", fontSize);
+
+  name.style.setProperty(
+    'font-size',
+    `${fontSize}px`,
+    'important'
+  );
+}
 }
 
 function syncAllRows() {

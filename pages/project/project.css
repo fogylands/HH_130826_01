@@ -28,8 +28,12 @@
   aspect-ratio: 4 / 3;
   height: auto;
   min-width: 0;
+  min-height: 0;
+  align-self: start;
   overflow: hidden;
 }
+
+
 .main-r {
   display: flex;
   flex-direction: column;
@@ -160,9 +164,126 @@ padding-left: 50%;
 }
 
 
+/* =================================
+   MOBILE LANDSCAPE
+================================= */
+
+  :root {
+    --font-size-nav: 4vh;
+    --font-size-body: 3vh;
+  }
+
+@media (max-width: 950px) and (orientation: landscape) {
+
+  .main {
+
+    grid-template-columns:
+
+      11vw
+
+      auto
+
+auto;
+
+    grid-template-rows:
+
+      5vh
+
+      auto;
+
+  
+
+  grid-template-areas:
+    "name navM ."
+    "name gallery info";
+
+  width: 100vw;
+  max-width: 100vw;
+  min-width: 0;
+        gap: 0;
+ 
+        padding-bottom: 8vh;
+}
 
 
-@media (max-width: 700px) {
+
+  .main-l {
+
+    grid-area: gallery;
+
+
+  height: 100%;
+ width: auto !important;
+  aspect-ratio: 4 / 3;
+
+
+  }
+
+  .main-r {
+    grid-area: info;
+
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    padding-right: 0;
+  }
+
+  .mainSide {
+
+  grid-area: name;
+  padding-left: 6vw;
+
+}
+
+.navSide, .navL, .navR{
+
+  padding-bottom: 2vh;
+}
+
+.navL {
+
+  grid-area: navM;
+
+}
+
+
+.project-credits{
+
+  padding-bottom: 12vh;
+}
+
+.project-description{
+  padding-bottom: 8vh;
+}
+
+body.project .main {
+
+  overflow: visible;
+
+}
+
+
+.header-l, .header-r{
+    letter-spacing: 0.08em;
+}
+
+}
+/* =================================
+   MOBILE PORTRAIT
+================================= */
+
+
+
+@media (max-width: 950px) and (orientation: portrait)  {
+
+  :root {
+
+  --font-size-nav:1.8vh;
+  --font-size-body: 1.2vh;
+
+
+}
 
   .container {
   display: grid;
@@ -178,7 +299,7 @@ padding-left: 50%;
 
       auto
 
-      5vh
+      8vh
 
       1fr;
 
@@ -191,30 +312,35 @@ padding-left: 50%;
   }
 
 .main {
-  display: grid;
+ grid-template-columns: 11vw minmax(0, 1fr);
 
-  grid-template-columns:
-    5vw minmax(0, 1fr);
-
-  column-gap: 2vw;
-
-  grid-template-areas:
+grid-template-areas:
   ". nav"
-  "name gallery"
+  "header gallery"
   ". info";
 }
+
+
+.main > .navSide,
+.main > .navR,
+.main > .detailsSide,
+.main > .detailsL,
+.main > .detailsR {
+  display: none;
+}
+
 .header-l{
 
   text-align: left;
    padding-top: 2vh;
-  padding-left: 9vw;
+  padding-left: 15vw;
   
 }
 
 .header-r{
 
   padding: 0vw;
-  padding-left: 9vw;
+  padding-left: 15vw;
  
   display: flex;
   flex-direction: column;
@@ -228,7 +354,7 @@ padding-left: 50%;
 }
 
 .mainSide {
-  grid-area: name;
+  grid-area: header;
 }
 
 .main-l {
@@ -274,4 +400,34 @@ padding-left: 50%;
   display: block;
 }
 
+.mainSide {
+  grid-area: header;
+  height: 100%;
+  overflow: visible;
+}
+
+.project-header {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.project-name {
+  grid-area: header;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+
+
+.project-description{
+  padding: 0vh;
+}
+
+.project-credits{
+  padding-left: 0vw;
+}
 }

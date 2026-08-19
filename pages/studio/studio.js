@@ -90,9 +90,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // --- RIGHT: Employees ---
-  fetch('../../libraries/04_Studio/studio.json')
-    .then(res => res.json())
-    .then(studio => {
+const imageLoaded = new Promise((resolve, reject) => {
+  if (image.complete && image.naturalWidth > 0) {
+    resolve();
+  } else {
+    image.addEventListener('load', resolve, { once: true });
+    image.addEventListener('error', reject, { once: true });
+  }
+});
+
+const studioLoaded = fetch('../../libraries/04_Studio/studio.json')
+  .then(res => res.json());
+
+Promise.all([imageLoaded, studioLoaded])
+  .then(([_, studio]) => {
 
       const employeeContent = document.createElement('div');
       employeeContent.classList.add('employee-content');
@@ -109,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name.textContent = employee.name;
 
 
-        name.addEventListener('click', () => {
+name.addEventListener('click', () => {
 
   document.querySelectorAll('.employee-list p')
     .forEach(item => item.classList.remove('active'));
@@ -117,8 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
   name.classList.add('active');
 
   employeeText.innerHTML = `<p>${employee.text}</p>`;
-
-  name.insertAdjacentElement('afterend', employeeText);
 });
 
 
@@ -257,19 +266,7 @@ employeeText.classList.add('full-text');
 mainR.appendChild(employeeRow);
 mainR.appendChild(mainRBottom);
 
-    
-
-    })
-    .catch(error => {
-      console.error("Error loading studio.json:", error);
-    });
-
-
-
-    
-
-
-  // Add both columns after data is ready
+      // Add both columns after data is ready
       container.appendChild(navSide);
       container.appendChild(navL);
       container.appendChild(navR);
@@ -281,5 +278,17 @@ mainR.appendChild(mainRBottom);
       container.appendChild(detailsSide);
       container.appendChild(detailsL);
       container.appendChild(detailsR);
+
+    })
+    .catch(error => {
+      console.error("Error loading studio.json:", error);
+    });
+
+
+
+    
+
+
+
 
 });

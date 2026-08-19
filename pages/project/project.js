@@ -398,16 +398,10 @@ const galleryWidth =
     )
   );
 
-const galleryHeight =
-  galleryWidth * 3 / 4;
-
-main.style.gridTemplateRows =
-  `5vh ${galleryHeight}px minmax(10vh, 1fr)`;
-
 mainL.style.width =
   `${galleryWidth}px`;
-}
 
+}
 window.addEventListener('resize', () => {
   if (window.innerWidth > 700) {
     updateProjectLayout();
