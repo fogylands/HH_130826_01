@@ -1,132 +1,336 @@
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp');
 
 const PROJECTS_DIR = path.join(__dirname, '03_Projects');
+const THUMBNAILS_DIR = path.join(PROJECTS_DIR, '_thumbnails');
 const OUTPUT_FILE = path.join(PROJECTS_DIR, 'projects.json');
 
 const projects = [];
 
-fs.readdirSync(PROJECTS_DIR).forEach(projectNumber => {
-  const projectPath = path.join(PROJECTS_DIR, projectNumber);
 
-  if (!fs.statSync(projectPath).isDirectory()) return;
+/* =================================
+   GENERATE THUMBNAILS
+================================= */
 
-  // Default metadata
-const parts = projectNumber.split('_');
+async function generateThumbnails() {
 
-  let number = parts[0]; // "2003"
-  let name = parts.slice(1, -1).join(' ');
-  let description = '';
-  let credits = '';
-  let location =``;
-  let year =``;
-  let type =``;
-  let status=``;
-  
+  fs.mkdirSync(THUMBNAILS_DIR, { recursive: true });
 
-  // Optional project.txt (if it exists)
-  const txtPath = path.join(projectPath, 'Project-Description.txt');
-  if (fs.existsSync(txtPath)) {
-    const lines = fs
-  .readFileSync(txtPath, 'utf8')
-  .split('\n')
-  .map(line => line.trim());
+  const projectFolders = fs.readdirSync(PROJECTS_DIR);
 
+  for (const project of projectFolders) {
 
+    const projectPath = path.join(PROJECTS_DIR, project);
 
-// Line 1 = name (remove underscores)
-name = (lines.shift() || name)
-  .replace(/^\d+_/, '')   // remove "01_"
-  .replace(/_/g, ' ');
+    if (!fs.statSync(projectPath).isDirectory()) continue;
+    if (project === '_thumbnails') continue;
 
+    const folders = fs.readdirSync(projectPath);
 
-const creditsIndex = lines.findIndex(line =>
-  line.startsWith('Bauleiter:')
-);
+    for (const folder of folders) {
 
-const detailsIndex = lines.findIndex(line =>
-  line.startsWith('Ort:')
-);
+      const folderPath = path.join(projectPath, folder);
 
+      if (!fs.statSync(folderPath).isDirectory()) continue;
 
+      const outputFolder = path.join(
+        THUMBNAILS_DIR,
+        project,
+        folder
+      );
 
-const descriptionEnd = detailsIndex !== -1 ? detailsIndex : lines.length;
+      fs.mkdirSync(outputFolder, { recursive: true });
 
-description = lines
-  .slice(0, descriptionEnd)
-  .join('\n')
-  .trim();
+      const images = fs.readdirSync(folderPath);
 
+      for (const image of images) {
 
- if (detailsIndex !== -1) {
-  lines.slice(detailsIndex).forEach(line => {
+        if (!/\.(jpg|jpeg|png|webp)$/i.test(image)) {
+          continue;
+        }
 
-    if (line.startsWith('Ort:')) {
-      location = line.replace('Ort:', '').trim();
+        const input = path.join(folderPath, image);
+
+        /*
+         * Always create JPEG thumbnails.
+         * This also makes PNG/WebP files consistent.
+         */
+        const outputName =
+          path.parse(image).name + '.jpg';
+
+        const output = path.join(
+          outputFolder,
+          outputName
+        );
+
+        await sharp(input)
+          .resize({
+            width: 800,
+            withoutEnlargement: true
+          })
+          .jpeg({
+            quality: 70
+          })
+          .toFile(output);
+
+        console.log('Thumbnail:', output);
+      }
     }
-
-    if (line.startsWith('Zeitraum:')) {
-      year = line.replace('Zeitraum:', '').trim();
-    }
-
-    if (line.startsWith('Art:')) {
-      type = line.replace('Art:', '').trim();
-    }
-
-    if (line.startsWith('Status:')) {
-      status = line.replace('Status:', '').trim();
-    }
-
-  });
-}
-
-// Details = Ort until the end
-if (detailsIndex !== -1) {
-  details = lines
-    .slice(detailsIndex)
-    .join('\n')
-    .trim();
-}
   }
 
-  // Read Credits.txt
-const creditsPath = path.join(projectPath, 'Credits.txt');
-
-if (fs.existsSync(creditsPath)) {
-  credits = fs
-    .readFileSync(creditsPath, 'utf8')
-    .trim()
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line !== '')
-    .join('<br>');
+  console.log('✅ All thumbnails generated');
 }
 
-  // Gather images by folder
-  const images = {};
-  fs.readdirSync(projectPath).forEach(folder => {
-    const folderPath = path.join(projectPath, folder);
-    if (!fs.statSync(folderPath).isDirectory()) return;
 
-    images[folder] = fs
-      .readdirSync(folderPath)
-      .filter(f => /\.(jpg|png|webp)$/i.test(f))
-      .sort();
-  });
+/* =================================
+   GENERATE PROJECTS JSON
+================================= */
 
-projects.push({
-  number,
-  name,
-  id: projectNumber,
-  description,
-  credits,
-  location,
-  year,
-  type,
-  status,
-  images
+function generateProjects() {
+
+  const projectFolders = fs.readdirSync(PROJECTS_DIR);
+
+  for (const projectNumber of projectFolders) {
+
+    const projectPath =
+      path.join(PROJECTS_DIR, projectNumber);
+
+    if (!fs.statSync(projectPath).isDirectory()) {
+      continue;
+    }
+
+    // Don't treat the thumbnail folder as a project
+    if (projectNumber === '_thumbnails') {
+      continue;
+    }
+
+
+    /* -------------------------
+       DEFAULT METADATA
+    ------------------------- */
+
+    const parts = projectNumber.split('_');
+
+    let number = parts[0];
+    let name = parts.slice(1, -1).join(' ');
+
+    let description = '';
+    let credits = '';
+    let location = '';
+    let year = '';
+    let type = '';
+    let status = '';
+    let details = '';
+
+
+    /* -------------------------
+       PROJECT DESCRIPTION
+    ------------------------- */
+
+    const txtPath = path.join(
+      projectPath,
+      'Project-Description.txt'
+    );
+
+    if (fs.existsSync(txtPath)) {
+
+      const lines = fs
+        .readFileSync(txtPath, 'utf8')
+        .split(/\r?\n/);
+
+
+      /* NAME */
+
+      const nameIndex = lines.findIndex(line =>
+        line.trim().toLowerCase().startsWith('name:')
+      );
+
+      if (nameIndex !== -1) {
+
+        name = lines[nameIndex]
+          .replace(/^name:\s*/i, '')
+          .trim();
+
+        lines.splice(nameIndex, 1);
+      }
+
+
+      /* DETAILS START */
+
+      const detailsIndex = lines.findIndex(line =>
+        line.trim().startsWith('Ort:')
+      );
+
+
+      /*
+       * Everything before "Ort:" is the description.
+       *
+       * IMPORTANT:
+       * Do NOT trim every individual line.
+       * This preserves line breaks and tabs.
+       */
+
+      const descriptionEnd =
+        detailsIndex !== -1
+          ? detailsIndex
+          : lines.length;
+
+      description = lines
+        .slice(0, descriptionEnd)
+        .join('\n')
+        .trim();
+
+
+      /* DETAILS */
+
+      if (detailsIndex !== -1) {
+
+        const detailLines =
+          lines.slice(detailsIndex);
+
+        detailLines.forEach(line => {
+
+          const trimmed = line.trim();
+
+          if (trimmed.startsWith('Ort:')) {
+            location =
+              trimmed.replace(/^Ort:\s*/, '');
+          }
+
+          if (trimmed.startsWith('Zeitraum:')) {
+            year =
+              trimmed.replace(/^Zeitraum:\s*/, '');
+          }
+
+          if (trimmed.startsWith('Art:')) {
+            type =
+              trimmed.replace(/^Art:\s*/, '');
+          }
+
+          if (trimmed.startsWith('Status:')) {
+            status =
+              trimmed.replace(/^Status:\s*/, '');
+          }
+
+        });
+
+
+        details = detailLines
+          .join('\n')
+          .trim();
+      }
+    }
+
+
+    /* -------------------------
+       CREDITS
+    ------------------------- */
+
+    const creditsPath =
+      path.join(projectPath, 'Credits.txt');
+
+    if (fs.existsSync(creditsPath)) {
+
+      credits = fs
+        .readFileSync(creditsPath, 'utf8')
+        .trim()
+        .split(/\r?\n/)
+        .filter(line => line.trim() !== '')
+        .join('<br>');
+    }
+
+
+    /* -------------------------
+       GATHER IMAGES
+    ------------------------- */
+
+    const images = {};
+
+    const folders =
+      fs.readdirSync(projectPath);
+
+    for (const folder of folders) {
+
+      const folderPath =
+        path.join(projectPath, folder);
+
+      if (!fs.statSync(folderPath).isDirectory()) {
+        continue;
+      }
+
+  const folderImages =
+  fs.readdirSync(folderPath)
+    .filter(file =>
+      /\.(jpg|jpeg|png|webp)$/i.test(file)
+    )
+    .map(file =>
+      path.parse(file).name + '.jpg'
+    )
+    .sort();
+
+      images[folder] = folderImages;
+    }
+
+
+    /* -------------------------
+       ADD PROJECT
+    ------------------------- */
+
+    projects.push({
+      number,
+      name,
+      id: projectNumber,
+      description,
+      credits,
+      location,
+      year,
+      type,
+      status,
+      details,
+      images
+    });
+  }
+
+
+  /* -------------------------
+     WRITE JSON
+  ------------------------- */
+
+  fs.writeFileSync(
+    OUTPUT_FILE,
+    JSON.stringify(projects, null, 2)
+  );
+
+  console.log('✅ projects.json generated');
+}
+
+
+/* =================================
+   RUN EVERYTHING
+================================= */
+
+async function main() {
+
+  console.log('-----------------------------');
+  console.log('GENERATING PROJECTS');
+  console.log('-----------------------------');
+
+  await generateThumbnails();
+
+  generateProjects();
+
+  console.log('-----------------------------');
+  console.log('✅ DONE');
+  console.log('-----------------------------');
+}
+
+main().catch(error => {
+
+  console.error(
+    '❌ Error generating projects:',
+    error
+  );
+
+  process.exit(1);
 });
-});
-
-fs.writeFileSync(OUTPUT_FILE, JSON.stringify(projects, null, 2));
-console.log('✅ projects.json generated');

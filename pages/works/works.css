@@ -193,6 +193,7 @@ a.active {
     width:calc(100% - 5vw);
 text-transform: uppercase;
   margin-left:5vw;
+  font-size: var(--font-size-body);
 }
 
 

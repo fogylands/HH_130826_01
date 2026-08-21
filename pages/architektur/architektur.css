@@ -42,11 +42,7 @@ body.architektur .project-header {
   width: 100%;
 }
 
-.project-images {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-}
+
 
 .project-header {
   width: 4vw;
@@ -55,9 +51,7 @@ body.architektur .project-header {
 }
 
 .project-name {
-
-  left: 0;
-  bottom: 0;
+ 
 
   font-size: var(--font-size-body);
   transform-origin: bottom left;
@@ -68,13 +62,18 @@ body.architektur .project-header {
   transform: rotate(180deg);
 }
 
+
+
+.project-images {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+}
+
 .project-image {
   width: 100%;
-
-  aspect-ratio: 4 / 3;
-
-  overflow: hidden;
-
+  height: 100%;
+  object-fit: contain;
+  display: none;
 }
 
 
@@ -85,6 +84,9 @@ body.architektur .project-header {
 }
 
 
+.black-image {
+  background: #000;
+}
 
 
 
@@ -120,6 +122,9 @@ body.architektur .project-header {
 .categories {
   display: none;
 }
+
+
+
 
 
 

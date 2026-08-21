@@ -101,7 +101,7 @@ font-size: var(--font-size-nav);
 
 .header-r, .footer-r {
   text-align: left;
-
+  letter-spacing: 34%;
 }
 
 
@@ -133,12 +133,16 @@ text-align: right;
   /* mobile styles go here */
 
 
-
+body.index {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
 /* CONTAINER GRID MOBILE */
 
 .container {
-    display: grid;
+  display: grid;
+
   grid-template-areas:
     "header-l"
     "header-r"
@@ -153,7 +157,9 @@ text-align: right;
     auto
     auto;
 
-    padding-left: 11vw;
+  min-height: 100vh;
+
+  padding-left: 11vw;
 }
 
 
@@ -175,21 +181,17 @@ text-align: right;
 
 }
 
-
-.footer-r {
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: flex-start;
-
-  align-items: flex-start;
-
-  text-align: left;
-  letter-spacing: 0.08em;
+.footer-l {
+    margin-top: 70vh;
+  align-self: end;
 }
 
+.footer-r {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 4vh;
+  margin-top: 0vh;
+}
 
 .header-r {
   padding-top: 0%;

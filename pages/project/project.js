@@ -353,7 +353,11 @@ const mainHeight =
   /* -------------------------
      VERTICAL LIMIT
   ------------------------- */
+const navL = document.querySelector('.navL');
 
+if (navL) {
+  navL.style.width = `${galleryWidth}px`;
+}
 const navHeight = window.innerHeight * 0.05;
 const detailsMinHeight = window.innerHeight * 0.10;
 
@@ -399,6 +403,9 @@ const galleryWidth =
   );
 
 mainL.style.width =
+  `${galleryWidth}px`;
+
+  navL.style.width =
   `${galleryWidth}px`;
 
 }

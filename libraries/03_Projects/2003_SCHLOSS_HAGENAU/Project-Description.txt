@@ -1,12 +1,8 @@
-
-Das Wohnhaus liegt direkt an der Römerstrasse, für das Quartier typisch mit Vorgarten. Im Gegensatz zu den älteren Nachbarhäusern ist das Haus mit fünfzehn Wohnungen ein längeres Gebäude mit zwei Hauseingängen. Diese neue Dimension der Gebäudeform gliedert sich in drei Gebäudeteile, welche sich jeweils in der Höhe der Traufe abzeichnen. Das bewegte Schrägdach sucht den Bezug zur Charakteristik des Wohnquartiers.
-
-
-
-Bauleiter: Jason Hoffmann
+Lorem ipsum
+<br>
 
 
-Ort: Winterthur
-Zeitraum: 2015-2016
-Art: Wettbewerb, 1. Platz
+Ort: St. Peter am Hart A
+Zeitraum: 2020-2021
+Art: Machbarkeitsstudie
 Status: Abgeschlossen

@@ -30,15 +30,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const detailsR = document.createElement('div');
   detailsR.classList.add('detailsR');
-    detailsR.innerHTML = `
-  
-   
+detailsR.innerHTML = `
+
+  <div class="studio-section-links">
+    <a class="link team-link" href="#">Team</a>
+    <a class="link jobs-link" href="#">Jobs</a>
+    <a class="link publikationen-link" href="#">Publikationen</a>
+    <a class="link aktuell-link" href="#">Aktuell</a>
+  </div>
+
+  <div class="studio-social-links">
     <a class="link" href="https://www.instagram.com/hoesslerhoffmann/">Instagram</a>
-
     <a class="link" href="https://www.linkedin.com/company/hoesslerhoffmann/">LinkedIn</a>
-
     <a class="link" href="../impressum/impressum.html">Impressum</a>
-  `;
+  </div>
+
+`;
 
   const detailsSide = document.createElement('div')
   detailsSide.classList.add('detailsSide');
@@ -114,25 +121,67 @@ Promise.all([imageLoaded, studioLoaded])
       const employeeText = document.createElement('div');
       employeeText.classList.add('employee-text');
 
-      studio.employees.forEach(employee => {
+      studio.forEach(employee => {
 
-        const name = document.createElement('p');
-        name.textContent = employee.name;
+  const name = document.createElement('p');
 
+  name.textContent = employee.name;
 
-name.addEventListener('click', () => {
+  name.addEventListener('click', () => {
 
-  document.querySelectorAll('.employee-list p')
-    .forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.employee-list p')
 
-  name.classList.add('active');
+      .forEach(item => item.classList.remove('active'));
 
-  employeeText.innerHTML = `<p>${employee.text}</p>`;
+    employeeList.querySelectorAll('.employee-text')
+  .forEach(item => item.remove());
+
+    name.classList.add('active');
+
+    const text = document.createElement('div');
+
+    text.classList.add('employee-text');
+
+text.innerHTML = `
+  <div class="employee-text-lines">
+    ${employee.text
+      .split(/\r?\n/)
+      .map(line => {
+
+        const match = line.match(
+          /^(\d{4}(?:\s*-\s*(?:\d{2})?)?)\s+(.*)$/
+        );
+
+        if (match) {
+          return `
+            <div class="employee-text-row">
+              <span class="employee-year">${match[1]}</span>
+              <span class="employee-info">${match[2]}</span>
+            </div>
+          `;
+        }
+
+        if (line.trim() === '') {
+          return `<div class="employee-empty-line"></div>`;
+        }
+
+        return `
+          <div class="employee-no-year">
+            ${line}
+          </div>
+        `;
+      })
+      .join('')}
+  </div>
+`;
+
+    name.insertAdjacentElement('afterend', text);
+
+  });
+
+  employeeList.appendChild(name);
+
 });
-
-
-        employeeList.appendChild(name);
-      });
 
   employeeContent.appendChild(employeeList);
 
@@ -140,30 +189,30 @@ const employeeRow = document.createElement('div');
 employeeRow.classList.add('employee-row');
 
 employeeRow.appendChild(employeeContent);
-employeeRow.appendChild(employeeText);
+
+mainR.appendChild(employeeRow);
+mainR.appendChild(employeeText);
 
 const mainRBottom = document.createElement('div');
 mainRBottom.classList.add('main-r-bottom');
 
-mainRBottom.innerHTML = `
-  <a class="link team-link" href="#">Team</a>
-  <a class="link jobs-link" href="#">Jobs</a>
-  <a class="link publikationen-link" href="#">Publikationen</a>
-  <a class="link aktuell-link" href="#">Aktuell</a>
-
-`;
 
 
 function setActiveLink(activeLink) {
-  mainRBottom.querySelectorAll('.link')
+  detailsR.querySelectorAll('.studio-section-links .link')
     .forEach(link => link.classList.remove('active'));
 
   activeLink.classList.add('active');
 }
 
-const teamLink = mainRBottom.querySelector('.team-link');
+  const teamLink = detailsR.querySelector('.team-link');
   setActiveLink(teamLink);
 
+
+
+const jobsLink = detailsR.querySelector('.jobs-link');
+const publikationenLink = detailsR.querySelector('.publikationen-link');
+const aktuellLink = detailsR.querySelector('.aktuell-link');
 
 teamLink.addEventListener('click', (e) => {
 
@@ -184,7 +233,7 @@ teamLink.addEventListener('click', (e) => {
 
 
 
-const jobsLink = mainRBottom.querySelector('.jobs-link');
+
 
 jobsLink.addEventListener('click', (e) => {
 
@@ -198,7 +247,7 @@ jobsLink.addEventListener('click', (e) => {
 
 employeeContent.style.display = 'none';
 
-employeeText.innerHTML = text;
+employeeText.textContent = text;
 employeeText.classList.add('full-text');
 
     })
@@ -211,7 +260,6 @@ employeeText.classList.add('full-text');
 
 
 
-const publikationenLink = mainRBottom.querySelector('.publikationen-link');
 
 publikationenLink.addEventListener('click', (e) => {
 
@@ -226,7 +274,7 @@ publikationenLink.addEventListener('click', (e) => {
 
 employeeContent.style.display = 'none';
 
-employeeText.innerHTML = text;
+employeeText.textContent = text;
 employeeText.classList.add('full-text');
 
 
@@ -239,7 +287,7 @@ employeeText.classList.add('full-text');
 });
 
 
-const aktuellLink = mainRBottom.querySelector('.aktuell-link');
+
 
 aktuellLink.addEventListener('click', (e) => {
 
@@ -252,7 +300,7 @@ aktuellLink.addEventListener('click', (e) => {
 
 employeeContent.style.display = 'none';
 
-employeeText.innerHTML = text;
+employeeText.textContent = text;
 employeeText.classList.add('full-text');
 
     })

@@ -1,7 +1,8 @@
+Lorem ipsum
+<br>
 
-Das Wohnhaus liegt direkt an der Römerstrasse, für das Quartier typisch mit Vorgarten. Im Gegensatz zu den älteren Nachbarhäusern ist das Haus mit fünfzehn Wohnungen ein längeres Gebäude mit zwei Hauseingängen. Diese neue Dimension der Gebäudeform gliedert sich in drei Gebäudeteile, welche sich jeweils in der Höhe der Traufe abzeichnen. Das bewegte Schrägdach sucht den Bezug zur Charakteristik des Wohnquartiers.
 
-Ort: Bern
-Zeitraum: 2019-2022
-Art: Direktauftrag
-Status: Offen
+Ort: Reigoldswil
+Zeitraum: 2024-2025
+Art: Umbau
+Status: Realisiert

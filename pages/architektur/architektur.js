@@ -188,7 +188,7 @@ function renderMobileProjects() {
         document.createElement('img');
 
       image.src =
-        `../../libraries/03_Projects/${project.id}/${activeMobileCategory}/${img}`;
+        `../../libraries/03_Projects/_thumbnails/${project.id}/${activeMobileCategory}/${img}`;
 
       image.alt =
         mobileCategories[activeMobileCategory];
@@ -288,19 +288,31 @@ async function renderProject(project) {
 
 
 
-  standardCategories.forEach(category => {
-    const images = project.images[category];
-    if (!images.length) return;
+standardCategories.forEach(category => {
+  const images = project.images[category];
 
-    const categoryDiv = document.createElement('div');
-    categoryDiv.classList.add('project-images');
-    categoryDiv.dataset.category = category;
+  const categoryDiv = document.createElement('div');
+  categoryDiv.classList.add('project-images');
+  categoryDiv.dataset.category = category;
 
-    
+  if (!images.length) {
+    const blackImage = document.createElement('div');
+    blackImage.classList.add(
+      'project-image',
+      'active',
+      'black-image'
+    );
+
+    categoryDiv.appendChild(blackImage);
+
+  } else {
 
     images.forEach((img, idx) => {
       const imgElement = document.createElement('img');
-      imgElement.src = `../../libraries/03_Projects/${project.id}/${category}/${img}`;
+
+      imgElement.src =
+        `../../libraries/03_Projects/_thumbnails/${project.id}/${category}/${img}`;
+
       imgElement.alt = category;
       imgElement.classList.add('project-image');
 
@@ -310,9 +322,10 @@ async function renderProject(project) {
 
       categoryDiv.appendChild(imgElement);
     });
-    
-    galleryRow.appendChild(categoryDiv);
-  });
+  }
+
+  galleryRow.appendChild(categoryDiv);
+});
 
   content.appendChild(galleryRow);
   content.appendChild(document.createElement('br'));
@@ -344,21 +357,17 @@ function initImageNavigation() {
 
     images[index].classList.add('active');
 
-    images.forEach(img => {
+    container.addEventListener('click', (e) => {
 
-      img.addEventListener('click', (e) => {
+  e.stopPropagation();
 
-        e.stopPropagation();
+  images[index].classList.remove('active');
 
-        images[index].classList.remove('active');
+  index = (index + 1) % images.length;
 
-        index = (index + 1) % images.length;
+  images[index].classList.add('active');
 
-        images[index].classList.add('active');
-
-      });
-
-    });
+});
 
   });
 
@@ -370,7 +379,7 @@ function syncGalleryRowHeight(row) {
 
   const height = image.getBoundingClientRect().height;
 
-  row.style.height = `${height}px`;
+
 
   const name = row.querySelector('.project-name');
 
